@@ -30,6 +30,18 @@ return [
 
     'env' => env('APP_ENV', 'production'),
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Internal Token
+    |--------------------------------------------------------------------------
+    |
+    | This token is used for internal API requests to authenticate the service.
+    |
+    */
+    'internal_token' => env('INTERNAL_TOKEN', ''),
+
+
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode
