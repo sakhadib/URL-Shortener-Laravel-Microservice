@@ -3,6 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\GatewayAuthController;
+use App\Http\Controllers\GatewayLinksController;
+use App\Http\Controllers\RedirectController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,6 +18,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Auth (pass-through)
+Route::post('/auth/register', [GatewayAuthController::class,'register']);
+Route::post('/auth/login',    [GatewayAuthController::class,'login']);
+Route::post('/auth/refresh',  [GatewayAuthController::class,'refresh']);
+Route::get('/me',             [GatewayAuthController::class,'me'])->middleware('jwtuser');
+
+// Links (needs JWT)
+Route::middleware('jwtuser')->group(function () {
+  Route::post('/links',          [GatewayLinksController::class,'create']);
+  Route::get('/links',           [GatewayLinksController::class,'list']);
+  Route::get('/links/{code}',    [GatewayLinksController::class,'detail']);
+  Route::delete('/links/{id}',   [GatewayLinksController::class,'destroy']);
 });
+
+// Public redirect
+Route::get('/r/{code}', [RedirectController::class,'go']);
