@@ -110,6 +110,19 @@ return [
 
     'faker_locale' => 'en_US',
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Internal Token
+    |--------------------------------------------------------------------------
+    |
+    | This token is used to authenticate internal requests to the API.
+    |
+    */
+
+    'internal_token' => env('INTERNAL_TOKEN', ''),
+
+
     /*
     |--------------------------------------------------------------------------
     | Encryption Key
