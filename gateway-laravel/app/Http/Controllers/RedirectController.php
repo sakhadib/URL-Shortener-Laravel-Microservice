@@ -35,4 +35,37 @@ class RedirectController extends Controller
 
         return redirect()->away($link['target_url'], 302);
     }
+
+    public function track(Request $r, string $code) {
+        // Verify the link exists first
+        $linkRes = Http::withHeaders(['X-Internal-Token'=>env('INTERNAL_TOKEN')])
+            ->get(env('LINKS_URL')."/api/internal/links/by-code/{$code}");
+        if (!$linkRes->successful()) {
+            return response()->json(['error'=>'Link not found'], 404);
+        }
+
+        // Track the click in stats service
+        try {
+            $statsRes = Http::timeout(0.7)
+              ->withHeaders(['X-Internal-Token'=>env('INTERNAL_TOKEN')])
+              ->post(env('STATS_URL').'/api/internal/events/click', [
+                    'code'=>$code,
+                    'ts'=>now()->toIso8601String(),
+                    'ip_hash'=>hash('sha256', $r->ip() ?? ''),
+                    'ua_hash'=>hash('sha256', $r->userAgent() ?? ''),
+                    'referrer'=>$r->headers->get('referer', ''),
+              ]);
+            
+            $statsData = $statsRes->json();
+            if (!isset($statsData['ok']) || $statsData['ok'] !== true) {
+                return response()->json(['error'=>'Stats service error', 'msg' => $statsData['data'] ?? 'Unknown error'], 503); 
+            }
+
+            return response()->json(['success' => true, 'message' => 'Click tracked successfully']);
+            
+        } catch (\Throwable $e) {
+            Log::error('Click tracking failed: ' . $e->getMessage());
+            return response()->json(['error'=>'Stats service unreachable', 'details' => $e->getMessage()], 503);
+        }
+    }
 }

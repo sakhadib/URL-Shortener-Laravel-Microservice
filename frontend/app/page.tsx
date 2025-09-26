@@ -77,7 +77,7 @@ export default function HomePage() {
         // Show result after longer processing animation
         setTimeout(() => {
           setShowResult(true)
-        }, 4000)
+        }, 2500)
         
         // Keep the complete state longer, then reset and switch to next demo
         setTimeout(() => {
@@ -124,10 +124,10 @@ export default function HomePage() {
           </div>
           <div className="flex items-center space-x-3">
             <ThemeToggle />
-            <Button variant="outline" size="sm" asChild>
+            <Button size="sm" asChild className="bg-muted text-foreground hover:bg-cyan-500 hover:text-white border border-border hover:border-cyan-500 transition-all duration-200">
               <a href="/login">Sign In</a>
             </Button>
-            <Button size="sm" asChild>
+            <Button size="sm" asChild className="bg-primary hover:bg-cyan-500 text-primary-foreground hover:text-white transition-all duration-200">
               <a href="/signup">Sign Up</a>
             </Button>
           </div>
@@ -155,8 +155,8 @@ export default function HomePage() {
           </p>
 
           {/* Enhanced Demo */}
-          <Card className="max-w-6xl mx-auto mb-6">
-            <CardContent className="p-4">
+          <Card className="max-w-6xl mx-auto mb-6 border-2 border-primary/10 shadow-lg hover:shadow-xl hover:border-primary/20 transition-all duration-300">
+            <CardContent className="p-6 bg-gradient-to-br from-card to-card/50">
               {/* Demo Header */}
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
@@ -178,10 +178,10 @@ export default function HomePage() {
                   <div className="text-xs font-medium text-muted-foreground mb-1 uppercase tracking-wide">
                     Original URL
                   </div>
-                  <div className={`relative overflow-hidden bg-muted/40 border rounded-lg p-2.5 font-mono text-xs break-all transition-all duration-700 ease-in-out ${
+                  <div className={`relative overflow-hidden bg-gradient-to-r from-muted/30 to-muted/50 border-2 rounded-lg p-2.5 font-mono text-xs break-all transition-all duration-700 ease-in-out ${
                     animateArrow 
-                      ? 'border-primary/50 bg-primary/10 shadow-sm shadow-primary/20 scale-[1.02]' 
-                      : 'border-muted hover:border-muted-foreground/20'
+                      ? 'border-primary/60 bg-gradient-to-r from-primary/10 to-primary/20 shadow-lg shadow-primary/20 scale-[1.02]' 
+                      : 'border-border/60 hover:border-primary/30 hover:bg-gradient-to-r hover:from-muted/40 hover:to-muted/60'
                   }`}>
                     {demoUrls[currentDemo].long}
                     
@@ -257,10 +257,10 @@ export default function HomePage() {
                   <div className="text-xs font-medium text-muted-foreground mb-1 uppercase tracking-wide">
                     Shortened URL
                   </div>
-                  <div className={`relative overflow-hidden bg-primary/5 border border-primary/20 rounded-lg p-2.5 font-mono text-sm transition-all duration-700 ease-out ${
+                  <div className={`relative overflow-hidden bg-gradient-to-r from-primary/10 to-primary/20 border-2 rounded-lg p-2.5 font-mono text-sm transition-all duration-700 ease-out ${
                     showResult 
-                      ? 'opacity-100 scale-100 border-primary/60 shadow-lg shadow-primary/10 bg-gradient-to-r from-primary/5 to-green/5' 
-                      : 'opacity-40 scale-95 border-primary/10'
+                      ? 'opacity-100 scale-100 border-primary/70 shadow-xl shadow-primary/15 bg-gradient-to-r from-primary/15 to-emerald-500/20' 
+                      : 'opacity-50 scale-95 border-primary/30'
                   }`}>
                     <div className="flex items-center justify-between">
                       <span className={`text-primary font-semibold transition-all duration-500 ${
@@ -269,12 +269,12 @@ export default function HomePage() {
                         {demoUrls[currentDemo].short}
                       </span>
                       <div className="flex gap-1">
-                        <button className={`p-1 rounded hover:bg-muted/40 transition-all duration-200 ${
+                        <button className={`p-1.5 rounded-md border border-primary/20 hover:border-primary/40 hover:bg-primary/10 hover:shadow-sm transition-all duration-200 ${
                           showResult ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
                         }`}>
                           <Copy className="w-3 h-3 text-primary" />
                         </button>
-                        <button className={`p-1 rounded hover:bg-muted/40 transition-all duration-200 delay-75 ${
+                        <button className={`p-1.5 rounded-md border border-primary/20 hover:border-primary/40 hover:bg-primary/10 hover:shadow-sm transition-all duration-200 delay-75 ${
                           showResult ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
                         }`}>
                           <ExternalLink className="w-3 h-3 text-primary" />
@@ -309,10 +309,10 @@ export default function HomePage() {
                 <div className="flex gap-2">
                   <Input 
                     placeholder="https://example.com/your-url..." 
-                    className="flex-1 font-mono text-xs h-9 bg-card border border-border focus:border-primary/40 focus:ring-1 focus:ring-primary/10 transition-all duration-200" 
+                    className="flex-1 font-mono text-xs h-9 bg-gradient-to-r from-background to-card/50 border-2 border-primary/20 hover:border-primary/30 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 shadow-sm transition-all duration-200" 
                   />
-                  <Button className="group h-9 px-4 bg-gradient-to-r from-primary to-primary/90 hover:from-primary/95 hover:to-primary/85 shadow-sm hover:shadow-md transition-all duration-200">
-                    <Link className="w-3 h-3 mr-1 group-hover:scale-105 transition-transform" />
+                  <Button className="group h-9 px-4 bg-primary hover:bg-cyan-500 text-primary-foreground hover:text-white hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-200">
+                    <Link className="w-3 h-3 mr-1 group-hover:scale-110 transition-transform" />
                     Shorten
                   </Button>
                 </div>
@@ -326,20 +326,25 @@ export default function HomePage() {
 
               {/* Benefits Row - Bottom Section */}
               <div className="mt-4 pt-3 border-t border-border/30">
-                <div className="grid grid-cols-3 gap-3 max-w-sm mx-auto">
-                  <div className="text-center p-3 bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-lg border border-emerald-200 shadow-sm">
-                    <div className="text-base font-bold text-emerald-600">
+                <div className="grid grid-cols-3 gap-3 max-w-md mx-auto">
+                  {/* Reduction Card */}
+                  <div className="text-center p-3 bg-emerald-50 dark:bg-emerald-950/20 rounded-lg border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/30 transition-colors duration-200">
+                    <div className="text-lg font-bold text-emerald-600 dark:text-emerald-400 mb-1">
                       {Math.round((1 - demoUrls[currentDemo].short.length / demoUrls[currentDemo].long.length) * 100)}%
                     </div>
-                    <div className="text-xs text-emerald-700">Reduction</div>
+                    <div className="text-xs text-emerald-700 dark:text-emerald-300 font-medium">REDUCTION</div>
                   </div>
-                  <div className="text-center p-3 bg-gradient-to-br from-primary/10 to-primary/20 rounded-lg border border-primary/30 shadow-sm">
-                    <div className="text-base font-bold text-primary">0.2s</div>
-                    <div className="text-xs text-primary/80">Processing</div>
+
+                  {/* Processing Card */}
+                  <div className="text-center p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors duration-200">
+                    <div className="text-lg font-bold text-blue-600 dark:text-blue-400 mb-1">0.2s</div>
+                    <div className="text-xs text-blue-700 dark:text-blue-300 font-medium">PROCESSING</div>
                   </div>
-                  <div className="text-center p-3 bg-gradient-to-br from-violet-50 to-violet-100 rounded-lg border border-violet-200 shadow-sm">
-                    <div className="text-base font-bold text-violet-600">∞</div>
-                    <div className="text-xs text-violet-700">Clicks</div>
+
+                  {/* Clicks Card */}
+                  <div className="text-center p-3 bg-violet-50 dark:bg-violet-950/20 rounded-lg border border-violet-200 dark:border-violet-800 hover:bg-violet-100 dark:hover:bg-violet-900/30 transition-colors duration-200">
+                    <div className="text-lg font-bold text-violet-600 dark:text-violet-400 mb-1">∞</div>
+                    <div className="text-xs text-violet-700 dark:text-violet-300 font-medium">CLICKS</div>
                   </div>
                 </div>
               </div>
@@ -384,16 +389,15 @@ export default function HomePage() {
               </CardContent>
             </Card>
           </div>
-
           {/* CTA Section */}
           <div className="text-center">
             <h2 className="text-3xl font-bold text-foreground mb-4">Ready to get started?</h2>
             <p className="text-muted-foreground mb-6">Create your account and start shortening URLs today</p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" asChild className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/95 hover:to-primary/85 shadow-sm hover:shadow-md transition-all duration-200">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Button size="lg" asChild className="bg-primary hover:bg-cyan-500 text-primary-foreground hover:text-white transition-all duration-200">
                 <a href="/signup">Get Started Free</a>
               </Button>
-              <Button variant="outline" size="lg" asChild className="border hover:bg-muted/30 transition-all duration-200">
+              <Button size="lg" asChild className="bg-muted text-foreground hover:bg-cyan-500 hover:text-white border border-border hover:border-cyan-500 transition-all duration-200">
                 <a href="/login">Sign In</a>
               </Button>
             </div>
@@ -503,7 +507,7 @@ export default function HomePage() {
                 <p className="text-sm text-muted-foreground mb-4">
                   Perfect for social media, email campaigns, marketing, and personal use
                 </p>
-                <Button size="sm" asChild>
+                <Button size="sm" asChild className="bg-primary hover:bg-cyan-500 text-primary-foreground hover:text-white hover:shadow-md hover:shadow-cyan-500/20 transition-all duration-200">
                   <a href="/signup">Start for Free</a>
                 </Button>
               </div>

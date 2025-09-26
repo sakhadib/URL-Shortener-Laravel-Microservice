@@ -30,7 +30,9 @@ Route::middleware('jwtuser')->group(function () {
   Route::get('/links',           [GatewayLinksController::class,'list']);
   Route::get('/links/{code}',    [GatewayLinksController::class,'detail']);
   Route::delete('/links/{id}',   [GatewayLinksController::class,'destroy']);
+  Route::get('/dashboard/stats', [GatewayLinksController::class,'dashboardStats']);
 });
 
 // Public redirect
 Route::get('/r/{code}', [RedirectController::class,'go']);
+Route::post('/r/{code}/track', [RedirectController::class,'track']);
