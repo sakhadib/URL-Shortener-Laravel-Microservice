@@ -79,4 +79,7 @@ declare module 'lucide-react' {
   export const Globe: ComponentType<IconProps>
   export const Eye: ComponentType<IconProps>
   export const EyeOff: ComponentType<IconProps>
+  export const ArrowRight: ComponentType<IconProps>
+  export const MousePointer: ComponentType<IconProps>
+  export const Sparkles: ComponentType<IconProps>
 }

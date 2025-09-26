@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { Link, BarChart3, Zap, Shield, Globe } from "lucide-react"
+import { Link, BarChart3, Zap, Shield, Globe, ArrowRight, Copy, ExternalLink, MousePointer, Sparkles } from "lucide-react"
 import { Dashboard } from "@/components/dashboard"
 import { ConnectionStatus } from "@/components/connection-status"
 import { apiClient, type User } from "@/lib/api-client"
@@ -15,10 +15,35 @@ export default function HomePage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  
+  // Animation states
+  const [currentDemo, setCurrentDemo] = useState(0)
+  const [animateArrow, setAnimateArrow] = useState(false)
+  const [showResult, setShowResult] = useState(false)
+  
   // const { isConnected, isChecking, checkConnection } = useBackendConnection()
   const isConnected = true // Temporarily disable connection checking
   const isChecking = false
   const checkConnection = () => {}
+  
+  // Demo data
+  const demoUrls = [
+    { 
+      long: "https://www.example.com/very/long/url/with/many/parameters?utm_source=social&utm_medium=facebook", 
+      short: "link.sh/abc123",
+      title: "Social Media Link"
+    },
+    { 
+      long: "https://github.com/user/repository/blob/main/src/components/VeryLongComponentName.tsx", 
+      short: "link.sh/gh-code",
+      title: "GitHub Repository"
+    },
+    { 
+      long: "https://docs.google.com/document/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit", 
+      short: "link.sh/doc-123",
+      title: "Google Document"
+    }
+  ]
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -40,6 +65,25 @@ export default function HomePage() {
     }
     checkAuth()
   }, [])
+
+  // Animation cycle for the demo
+  useEffect(() => {
+    if (!isAuthenticated) {
+      const interval = setInterval(() => {
+        setAnimateArrow(true)
+        setTimeout(() => {
+          setShowResult(true)
+          setTimeout(() => {
+            setShowResult(false)
+            setAnimateArrow(false)
+            setCurrentDemo((prev) => (prev + 1) % demoUrls.length)
+          }, 3000)
+        }, 1000)
+      }, 6000)
+
+      return () => clearInterval(interval)
+    }
+  }, [isAuthenticated, demoUrls.length])
 
   if (isLoading) {
     return (
@@ -91,35 +135,66 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="py-20 px-4">
         <div className="container mx-auto text-center max-w-4xl">
-          <Badge variant="secondary" className="mb-4">
-            <Zap className="w-3 h-3 mr-1" />
-            Fast & Reliable
-          </Badge>
           <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6 text-balance">
             Shorten URLs with
-            <span className="text-primary"> Lightning Speed</span>
+            <span className="text-primary"> Precision</span>
           </h1>
-          <p className="text-xl text-muted-foreground mb-8 text-pretty max-w-2xl mx-auto">
-            Transform long, complex URLs into short, shareable links. Track clicks, analyze performance, and manage all
-            your links in one powerful dashboard.
+          <p className="text-xl text-muted-foreground mb-12 text-pretty max-w-2xl mx-auto">
+            Transform complex URLs into clean, shareable links. Track performance and manage everything in one place.
           </p>
 
-          {/* Quick Shortener */}
-          <Card className="max-w-2xl mx-auto mb-12">
+          {/* Clean Demo */}
+          <Card className="max-w-3xl mx-auto mb-12">
             <CardContent className="p-6">
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Input placeholder="Enter your long URL here..." className="flex-1" />
-                <Button className="sm:w-auto">
-                  <Link className="w-4 h-4 mr-2" />
-                  Shorten URL
-                </Button>
+              {/* Demo Animation */}
+              <div className="space-y-4">
+                {/* Long URL */}
+                <div className="relative">
+                  <div className="bg-muted/30 rounded-lg p-3 font-mono text-sm break-all transition-all duration-500">
+                    {demoUrls[currentDemo].long}
+                  </div>
+                </div>
+
+                {/* Arrow */}
+                <div className="flex justify-center">
+                  <div className={`transform transition-all duration-700 ${
+                    animateArrow ? 'text-primary' : 'text-muted-foreground'
+                  }`}>
+                    <ArrowRight className="w-6 h-6" />
+                  </div>
+                </div>
+
+                {/* Short URL Result */}
+                <div className={`transition-all duration-500 ${
+                  showResult ? 'opacity-100' : 'opacity-60'
+                }`}>
+                  <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 font-mono text-sm flex items-center justify-between">
+                    <span className="text-primary font-medium">
+                      {demoUrls[currentDemo].short}
+                    </span>
+                    <div className="flex gap-1">
+                      <Copy className="w-4 h-4 text-muted-foreground" />
+                      <ExternalLink className="w-4 h-4 text-muted-foreground" />
+                    </div>
+                  </div>
+                </div>
               </div>
-              <p className="text-sm text-muted-foreground mt-3">
-                <a href="/signup" className="text-primary hover:underline">
-                  Sign up
-                </a>{" "}
-                to track and manage your links
-              </p>
+
+              <div className="mt-6 pt-4 border-t border-border/50">
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Input placeholder="Paste your long URL here..." className="flex-1" />
+                  <Button className="sm:w-auto">
+                    <Link className="w-4 h-4 mr-2" />
+                    Shorten
+                  </Button>
+                </div>
+                <p className="text-sm text-muted-foreground mt-3">
+                  <a href="/signup" className="text-primary hover:underline">
+                    Create account
+                  </a>{" "}
+                  for analytics and management
+                </p>
+              </div>
             </CardContent>
           </Card>
 
