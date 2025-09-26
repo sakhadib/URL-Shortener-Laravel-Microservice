@@ -71,7 +71,7 @@ export function CreateLinkForm({ onSuccess, onCancel }: CreateLinkFormProps) {
           )}
 
           <div className="space-y-2">
-            <Label htmlFor="targetUrl">Target URL *</Label>
+            <Label htmlFor="targetUrl" className="text-sm font-medium text-foreground">Target URL *</Label>
             <Input
               id="targetUrl"
               type="url"
@@ -79,27 +79,29 @@ export function CreateLinkForm({ onSuccess, onCancel }: CreateLinkFormProps) {
               value={targetUrl}
               onChange={(e) => setTargetUrl(e.target.value)}
               required
+              className="h-12 px-4 bg-gradient-to-r from-background to-card/50 border-2 border-primary/20 hover:border-primary/30 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 shadow-sm transition-all duration-200 text-foreground placeholder:text-muted-foreground/60"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="customCode">Custom Code (optional)</Label>
+            <Label htmlFor="customCode" className="text-sm font-medium text-foreground">Custom Code (optional)</Label>
             <Input
               id="customCode"
               type="text"
               placeholder="my-custom-link"
               value={customCode}
               onChange={(e) => setCustomCode(e.target.value)}
+              className="h-12 px-4 bg-gradient-to-r from-background to-card/50 border-2 border-primary/20 hover:border-primary/30 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 shadow-sm transition-all duration-200 text-foreground placeholder:text-muted-foreground/60"
             />
             <p className="text-xs text-muted-foreground">Leave empty to generate a random code</p>
           </div>
 
           <div className="flex gap-3">
-            <Button type="submit" disabled={isLoading}>
+            <Button type="submit" disabled={isLoading} className="bg-primary hover:bg-cyan-500 text-primary-foreground hover:text-white transition-all duration-200">
               {isLoading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
               Create Link
             </Button>
-            <Button type="button" variant="outline" onClick={onCancel}>
+            <Button type="button" variant="outline" onClick={onCancel} className="hover:bg-cyan-500 hover:text-white hover:border-cyan-500 transition-all duration-200">
               Cancel
             </Button>
           </div>

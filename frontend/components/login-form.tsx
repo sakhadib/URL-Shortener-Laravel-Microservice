@@ -47,8 +47,8 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
 
   return (
     <div className="w-full max-w-sm mx-auto">
-      <Card className="border-0 shadow-lg">
-        <CardHeader className="space-y-1 pb-1">
+      <Card className="border-2 border-primary/20 shadow-xl bg-gradient-to-br from-card to-card/50">
+        <CardHeader className="space-y-1 pb-1 border-b border-border/20">
           <CardTitle className="text-xl font-semibold text-center">Welcome Back</CardTitle>
           <CardDescription className="text-center text-muted-foreground text-sm">
             Sign in to continue
@@ -73,7 +73,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="h-10 px-3 border-border focus:border-primary focus:ring-1 focus:ring-primary"
+                className="h-10 px-3 bg-gradient-to-r from-background to-card/50 border-2 border-primary/20 hover:border-primary/30 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 shadow-sm transition-all duration-200"
               />
             </div>
 
@@ -89,7 +89,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="h-10 px-3 pr-10 border-border focus:border-primary focus:ring-1 focus:ring-primary"
+                  className="h-10 px-3 pr-10 bg-gradient-to-r from-background to-card/50 border-2 border-primary/20 hover:border-primary/30 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 shadow-sm transition-all duration-200"
                 />
                 <button
                   type="button"
@@ -105,7 +105,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
 
             <Button 
               type="submit" 
-              className="w-full h-10 text-sm font-medium mt-4" 
+              className="w-full h-10 text-sm font-medium mt-4 bg-gradient-to-r from-primary to-primary/90 hover:from-primary hover:to-primary/95 shadow-lg hover:shadow-xl hover:shadow-primary/30 transition-all duration-300" 
               disabled={isLoading}
             >
               {isLoading ? (
