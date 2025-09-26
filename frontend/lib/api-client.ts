@@ -128,6 +128,7 @@ export class ApiClient {
     return this.makeRequest<ApiResponse<Link>>('/links', {
       method: 'POST',
       body: JSON.stringify({
+        owner_id: 4,
         target_url: targetUrl,
         custom_code: customCode,
       }),
@@ -140,6 +141,19 @@ export class ApiClient {
 
   async getLinkDetail(code: string): Promise<ApiResponse<LinkDetail>> {
     return this.makeRequest<ApiResponse<LinkDetail>>(`/links/${code}`)
+  }
+
+  async getLinkStats(code: string): Promise<LinkDetail | null> {
+    try {
+      const response = await this.makeRequest<ApiResponse<LinkDetail>>(`/links/${code}`)
+      return response.data
+    } catch (err) {
+      // Return null for 404 errors (no stats yet), but throw for other errors
+      if (err instanceof Error && err.message.includes("Not found")) {
+        return null
+      }
+      throw err
+    }
   }
 
   async deleteLink(id: number): Promise<ApiResponse<any>> {

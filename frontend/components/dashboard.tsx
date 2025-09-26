@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Link, Plus, LogOut, BarChart3, TrendingUp, MousePointer, Calendar, ExternalLink, Copy, Eye, PieChart, Activity } from "lucide-react"
+import { Link, Plus, LogOut, BarChart3, ArrowRight, MousePointer, Calendar, ExternalLink, Copy, Eye, BarChart3 as ChartIcon, Zap } from "lucide-react"
 import { CreateLinkForm } from "@/components/create-link-form"
 import { LinkCard } from "@/components/link-card"
 import { ThemeToggle } from "@/components/theme-toggle"
@@ -63,6 +63,18 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
   const handleLinkCreated = () => {
     setShowCreateForm(false)
     fetchData()
+  }
+
+  const handleLinkDeleted = (linkId: number) => {
+    // Remove the link from local state immediately for instant UI update
+    setLinks(prevLinks => prevLinks.filter(link => link.id !== linkId))
+    
+    // Also remove from local status changes if it exists
+    setLocalStatusChanges(prev => {
+      const updated = { ...prev }
+      delete updated[linkId]
+      return updated
+    })
   }
 
   const handleLocalClick = () => {
@@ -172,6 +184,7 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
                   onUpdate={fetchLinks} 
                   onLocalClick={handleLocalClick}
                   onStatusToggle={handleStatusToggle}
+                  onDelete={handleLinkDeleted}
                 />
               ))}
             </div>
@@ -197,7 +210,7 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
             <Card className="border-0 shadow-sm rounded-none">
               <CardContent className="p-3">
                 <div className="text-center">
-                  <TrendingUp className="w-5 h-5 mx-auto mb-1 text-emerald-600" />
+                  <ArrowRight className="w-5 h-5 mx-auto mb-1 text-emerald-600" />
                   <p className="text-xl font-bold text-emerald-600 mb-0">
                     {isLoadingStats ? "..." : getCurrentActiveLinks()}
                   </p>
@@ -229,7 +242,7 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
           <Card className="lg:col-span-2">
             <CardHeader className="pb-3">
               <CardTitle className="text-xl flex items-center gap-2">
-                <PieChart className="w-6 h-6" />
+                <ChartIcon className="w-6 h-6" />
                 Link Status Distribution
               </CardTitle>
             </CardHeader>
@@ -330,7 +343,7 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <TrendingUp className="w-5 h-5" />
+                <BarChart3 className="w-5 h-5" />
                 Recent Activity
               </CardTitle>
             </CardHeader>
@@ -346,7 +359,7 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
                         : 0}%
                     </p>
                   </div>
-                  <TrendingUp className="w-5 h-5 text-green-600" />
+                  <ArrowRight className="w-5 h-5 text-green-600" />
                 </div>
               </div>
 
@@ -376,7 +389,7 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
                   </div>
                 ) : (
                   <div className="text-center py-4">
-                    <Activity className="w-6 h-6 text-muted-foreground mx-auto mb-2" />
+                    <Zap className="w-6 h-6 text-muted-foreground mx-auto mb-2" />
                     <p className="text-xs text-muted-foreground">No recent activity</p>
                   </div>
                 )}

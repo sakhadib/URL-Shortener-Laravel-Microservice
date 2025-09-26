@@ -12,9 +12,10 @@ interface LinkCardProps {
   onUpdate: () => void
   onLocalClick?: () => void
   onStatusToggle?: (linkId: number, newStatus: boolean) => void
+  onDelete?: (linkId: number) => void
 }
 
-export function LinkCard({ link, onUpdate, onLocalClick, onStatusToggle }: LinkCardProps) {
+export function LinkCard({ link, onUpdate, onLocalClick, onStatusToggle, onDelete }: LinkCardProps) {
   const [copied, setCopied] = useState(false)
   const [stats, setStats] = useState<LinkDetail | null>(null)
   const [loadingStats, setLoadingStats] = useState(false)
@@ -27,10 +28,11 @@ export function LinkCard({ link, onUpdate, onLocalClick, onStatusToggle }: LinkC
   const fetchStats = async () => {
     setLoadingStats(true)
     try {
-      const response = await apiClient.getLinkDetail(link.code)
-      setStats(response.data)
+      const statsData = await apiClient.getLinkStats(link.code)
+      setStats(statsData)
     } catch (err) {
       console.error("Failed to fetch stats:", err)
+      setStats(null)
     } finally {
       setLoadingStats(false)
     }
@@ -55,11 +57,25 @@ export function LinkCard({ link, onUpdate, onLocalClick, onStatusToggle }: LinkC
     
     setIsDeleting(true)
     try {
+      // Remove from UI immediately if onDelete is provided
+      if (onDelete) {
+        onDelete(link.id)
+      }
+      
+      // Call backend to delete from database  
       await apiClient.deleteLink(link.id)
-      onUpdate() // Refresh the links list
+      
+      // Only call onUpdate if onDelete wasn't provided (fallback)
+      if (!onDelete) {
+        onUpdate()
+      }
+      
     } catch (err) {
       console.error("Failed to delete link:", err)
       alert("Failed to delete link. Please try again.")
+      
+      // If backend deletion failed, refresh to restore the link in UI
+      onUpdate()
     } finally {
       setIsDeleting(false)
     }
