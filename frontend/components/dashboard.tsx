@@ -178,50 +178,39 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
           )}
         </div>
 
-        {/* Analytics Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">Total Links</p>
-                  <p className="text-3xl font-bold text-foreground">
+        {/* Analytics Overview with Chart */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          {/* Analytics Cards - Vertical Stack */}
+          <div className="lg:col-span-1 space-y-0">
+            <Card className="border-0 shadow-sm rounded-none rounded-t-lg">
+              <CardContent className="p-3">
+                <div className="text-center">
+                  <Link className="w-5 h-5 mx-auto mb-1 text-primary" />
+                  <p className="text-xl font-bold text-foreground mb-0">
                     {isLoadingStats ? "..." : dashboardStats?.total_links || links.length}
                   </p>
-                  <p className="text-xs text-muted-foreground mt-1">All time</p>
+                  <p className="text-xs text-muted-foreground">All time</p>
                 </div>
-                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
-                  <Link className="w-6 h-6 text-primary" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
 
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">Active Links</p>
-                  <p className="text-3xl font-bold text-emerald-600">
+            <Card className="border-0 shadow-sm rounded-none">
+              <CardContent className="p-3">
+                <div className="text-center">
+                  <TrendingUp className="w-5 h-5 mx-auto mb-1 text-emerald-600" />
+                  <p className="text-xl font-bold text-emerald-600 mb-0">
                     {isLoadingStats ? "..." : getCurrentActiveLinks()}
                   </p>
-                  <p className="text-xs text-emerald-600 mt-1">Currently active</p>
+                  <p className="text-xs text-muted-foreground">Currently active</p>
                 </div>
-                <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/20 rounded-xl flex items-center justify-center">
-                  <TrendingUp className="w-6 h-6 text-emerald-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
 
-
-
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">This Month</p>
-                  <p className="text-3xl font-bold text-violet-600">
+            <Card className="border-0 shadow-sm rounded-none rounded-b-lg">
+              <CardContent className="p-3">
+                <div className="text-center">
+                  <Calendar className="w-5 h-5 mx-auto mb-1 text-violet-600" />
+                  <p className="text-xl font-bold text-violet-600 mb-0">
                     {isLoadingStats ? "..." : dashboardStats?.clicks_this_month || 
                       links.filter(link => {
                         const created = new Date(link.created_at)
@@ -230,28 +219,22 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
                       }).length
                     }
                   </p>
-                  <p className="text-xs text-violet-600 mt-1">Recent activity</p>
+                  <p className="text-xs text-muted-foreground">Recent activity</p>
                 </div>
-                <div className="w-12 h-12 bg-violet-100 dark:bg-violet-900/20 rounded-xl flex items-center justify-center">
-                  <Calendar className="w-6 h-6 text-violet-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+              </CardContent>
+            </Card>
+          </div>
 
-        {/* Charts Section */}
-        <div className="grid lg:grid-cols-1 gap-6 mb-8">
-          {/* Link Status Pie Chart */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <PieChart className="w-5 h-5" />
+          {/* Link Status Distribution Chart */}
+          <Card className="lg:col-span-2">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-xl flex items-center gap-2">
+                <PieChart className="w-6 h-6" />
                 Link Status Distribution
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="h-64 w-full">
+              <div className="h-60 w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <RechartsPieChart>
                     <Pie
@@ -261,9 +244,9 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
                       ]}
                       cx="50%"
                       cy="50%"
-                      innerRadius={60}
+                      innerRadius={50}
                       outerRadius={100}
-                      paddingAngle={5}
+                      paddingAngle={8}
                       dataKey="value"
                     >
                       <Cell fill="#10b981" />
@@ -273,19 +256,21 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
                   </RechartsPieChart>
                 </ResponsiveContainer>
               </div>
-              <div className="flex justify-center gap-4 mt-4">
-                <div className="flex items-center gap-2">
+              <div className="flex justify-center gap-3 mt-2">
+                <div className="flex items-center gap-1">
                   <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
-                  <span className="text-sm text-muted-foreground">Active ({getCurrentActiveLinks()})</span>
+                  <span className="text-xs text-muted-foreground">Active ({getCurrentActiveLinks()})</span>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1">
                   <div className="w-3 h-3 bg-gray-500 rounded-full"></div>
-                  <span className="text-sm text-muted-foreground">Inactive ({links.length - getCurrentActiveLinks()})</span>
+                  <span className="text-xs text-muted-foreground">Inactive ({links.length - getCurrentActiveLinks()})</span>
                 </div>
               </div>
             </CardContent>
           </Card>
         </div>
+
+
 
         {/* Quick Actions & Recent Activity */}
         <div className="grid lg:grid-cols-3 gap-6 mb-8">
@@ -300,20 +285,20 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
               </CardHeader>
               <CardContent>
                 {/* Key Metrics */}
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="text-center p-4 bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20 rounded-lg border border-emerald-200 dark:border-emerald-800">
-                    <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+                <div className="grid grid-cols-2 gap-3 mb-4">
+                  <div className="text-center p-3 bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20 rounded-lg border border-emerald-200 dark:border-emerald-800">
+                    <div className="text-xl font-bold text-emerald-600 dark:text-emerald-400">
                       {dashboardStats?.total_links 
                         ? Math.round(((dashboardStats?.total_clicks || 0) + localTotalClicks) / dashboardStats.total_links) 
                         : 0}
                     </div>
-                    <div className="text-sm text-emerald-700 dark:text-emerald-300">Avg Clicks/Link</div>
+                    <div className="text-xs text-emerald-700 dark:text-emerald-300">Avg Clicks/Link</div>
                   </div>
-                  <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-lg border border-blue-200 dark:border-blue-800">
-                    <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                  <div className="text-center p-3 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                    <div className="text-xl font-bold text-blue-600 dark:text-blue-400">
                       {links.length > 0 ? Math.round((getCurrentActiveLinks() / links.length) * 100) : 100}%
                     </div>
-                    <div className="text-sm text-blue-700 dark:text-blue-300">Active Rate</div>
+                    <div className="text-xs text-blue-700 dark:text-blue-300">Active Rate</div>
                   </div>
                 </div>
 
@@ -322,14 +307,18 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart
                       data={[
-                        { name: 'Links', value: links.length, color: '#6366f1' },
-                        { name: 'Active', value: getCurrentActiveLinks(), color: '#10b981' },
-                        { name: 'Clicks', value: Math.min((dashboardStats?.total_clicks || 0) + localTotalClicks, 100), color: '#f59e0b' },
+                        { name: 'Links', value: links.length },
+                        { name: 'Active', value: getCurrentActiveLinks() },
+                        { name: 'Clicks', value: Math.min((dashboardStats?.total_clicks || 0) + localTotalClicks, 100) },
                       ]}
                     >
                       <XAxis dataKey="name" />
                       <Tooltip />
-                      <Bar dataKey="value" fill="#6366f1" radius={[4, 4, 0, 0]} />
+                      <Bar dataKey="value" radius={[4, 4, 0, 0]}>
+                        <Cell fill="#6366f1" />
+                        <Cell fill="#10b981" />
+                        <Cell fill="#f59e0b" />
+                      </Bar>
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
@@ -347,30 +336,30 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
             </CardHeader>
             <CardContent className="space-y-4">
               {/* Growth Indicator */}
-              <div className="p-3 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-lg border border-green-200 dark:border-green-800">
+              <div className="p-2 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-lg border border-green-200 dark:border-green-800">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-green-700 dark:text-green-300">Growth Rate</p>
-                    <p className="text-lg font-bold text-green-600 dark:text-green-400">
+                    <p className="text-xs font-medium text-green-700 dark:text-green-300">Growth Rate</p>
+                    <p className="text-base font-bold text-green-600 dark:text-green-400">
                       +{dashboardStats?.clicks_this_month && dashboardStats?.total_clicks 
                         ? Math.round((dashboardStats.clicks_this_month / dashboardStats.total_clicks) * 100) 
                         : 0}%
                     </p>
                   </div>
-                  <TrendingUp className="w-6 h-6 text-green-600" />
+                  <TrendingUp className="w-5 h-5 text-green-600" />
                 </div>
               </div>
 
               {/* Activity Feed */}
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {dashboardStats?.recent_activity?.length ? (
                   dashboardStats.recent_activity.map((activity, index) => (
-                    <div key={index} className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors border border-border/50">
-                      <div className="w-10 h-10 bg-gradient-to-br from-primary/10 to-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
-                        <Link className="w-5 h-5 text-primary" />
+                    <div key={index} className="flex items-center gap-2 p-2 rounded-lg hover:bg-muted/50 transition-colors border border-border/50">
+                      <div className="w-8 h-8 bg-gradient-to-br from-primary/10 to-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
+                        <Link className="w-4 h-4 text-primary" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium truncate text-foreground">{activity.link_code}</p>
+                        <p className="text-xs font-medium truncate text-foreground">{activity.link_code}</p>
                         <p className="text-xs text-muted-foreground">
                           Created {new Date(activity.timestamp).toLocaleDateString()}
                         </p>
@@ -381,14 +370,14 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
                     </div>
                   ))
                 ) : isLoadingStats ? (
-                  <div className="text-center py-6">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-                    <p className="text-sm text-muted-foreground mt-2">Loading activity...</p>
+                  <div className="text-center py-4">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mx-auto"></div>
+                    <p className="text-xs text-muted-foreground mt-2">Loading activity...</p>
                   </div>
                 ) : (
-                  <div className="text-center py-6">
-                    <Activity className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-                    <p className="text-sm text-muted-foreground">No recent activity</p>
+                  <div className="text-center py-4">
+                    <Activity className="w-6 h-6 text-muted-foreground mx-auto mb-2" />
+                    <p className="text-xs text-muted-foreground">No recent activity</p>
                   </div>
                 )}
               </div>
