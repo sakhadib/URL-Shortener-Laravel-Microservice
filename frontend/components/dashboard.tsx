@@ -84,6 +84,8 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
     }).length
   }
 
+
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -177,7 +179,7 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
         </div>
 
         {/* Analytics Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           <Card className="hover:shadow-lg transition-shadow">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -212,22 +214,7 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">Total Clicks</p>
-                  <p className="text-3xl font-bold text-blue-600">
-                    {isLoadingStats ? "..." : (dashboardStats?.total_clicks || 0) + localTotalClicks}
-                  </p>
-                  <p className="text-xs text-blue-600 mt-1">All time clicks</p>
-                </div>
-                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/20 rounded-xl flex items-center justify-center">
-                  <MousePointer className="w-6 h-6 text-blue-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+
 
           <Card className="hover:shadow-lg transition-shadow">
             <CardContent className="p-6">
@@ -254,7 +241,7 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
         </div>
 
         {/* Charts Section */}
-        <div className="grid lg:grid-cols-2 gap-6 mb-8">
+        <div className="grid lg:grid-cols-1 gap-6 mb-8">
           {/* Link Status Pie Chart */}
           <Card>
             <CardHeader>
@@ -295,36 +282,6 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
                   <div className="w-3 h-3 bg-gray-500 rounded-full"></div>
                   <span className="text-sm text-muted-foreground">Inactive ({links.length - getCurrentActiveLinks()})</span>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Activity Trend Chart */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Activity className="w-5 h-5" />
-                Click Performance
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="h-64 w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart
-                    data={[
-                      { name: 'Week 1', clicks: Math.floor(((dashboardStats?.total_clicks || 0) + localTotalClicks) * 0.15) },
-                      { name: 'Week 2', clicks: Math.floor(((dashboardStats?.total_clicks || 0) + localTotalClicks) * 0.25) },
-                      { name: 'Week 3', clicks: Math.floor(((dashboardStats?.total_clicks || 0) + localTotalClicks) * 0.35) },
-                      { name: 'Week 4', clicks: Math.floor(((dashboardStats?.total_clicks || 0) + localTotalClicks) * 0.25) },
-                    ]}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Area type="monotone" dataKey="clicks" stroke="#6366f1" fill="#6366f1" fillOpacity={0.6} />
-                  </AreaChart>
-                </ResponsiveContainer>
               </div>
             </CardContent>
           </Card>
@@ -439,109 +396,7 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
           </Card>
         </div>
 
-        {/* Detailed Analytics Dashboard */}
-        <div className="grid lg:grid-cols-4 gap-6 mb-8">
-          {/* Daily Trend Mini Chart */}
-          <Card className="lg:col-span-2">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg flex items-center gap-2">
-                <LineChart className="w-5 h-5" />
-                Daily Clicks Trend
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="h-48">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart
-                    data={[
-                      { day: 'Mon', clicks: Math.floor(((dashboardStats?.total_clicks || 0) + localTotalClicks) * 0.1) },
-                      { day: 'Tue', clicks: Math.floor(((dashboardStats?.total_clicks || 0) + localTotalClicks) * 0.15) },
-                      { day: 'Wed', clicks: Math.floor(((dashboardStats?.total_clicks || 0) + localTotalClicks) * 0.2) },
-                      { day: 'Thu', clicks: Math.floor(((dashboardStats?.total_clicks || 0) + localTotalClicks) * 0.18) },
-                      { day: 'Fri', clicks: Math.floor(((dashboardStats?.total_clicks || 0) + localTotalClicks) * 0.22) },
-                      { day: 'Sat', clicks: Math.floor(((dashboardStats?.total_clicks || 0) + localTotalClicks) * 0.08) },
-                      { day: 'Sun', clicks: Math.floor(((dashboardStats?.total_clicks || 0) + localTotalClicks) * 0.07) },
-                    ]}
-                  >
-                    <XAxis dataKey="day" />
-                    <YAxis />
-                    <Tooltip />
-                    <Line type="monotone" dataKey="clicks" stroke="#06b6d4" strokeWidth={3} dot={{ r: 4 }} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            </CardContent>
-          </Card>
 
-          {/* Quick Stats Cards */}
-          <div className="lg:col-span-2 grid grid-cols-2 gap-4">
-            <Card className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Peak Day</p>
-                  <p className="text-xl font-bold text-foreground">
-                    {dashboardStats?.total_clicks ? 'Friday' : '--'}
-                  </p>
-                  <p className="text-xs text-green-600">
-                    {dashboardStats?.total_clicks ? '+22% clicks' : 'No data'}
-                  </p>
-                </div>
-                <div className="w-10 h-10 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
-                  <TrendingUp className="w-5 h-5 text-green-600" />
-                </div>
-              </div>
-            </Card>
-
-            <Card className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Avg Response</p>
-                  <p className="text-xl font-bold text-foreground">
-                    {dashboardStats?.total_clicks ? '0.3s' : '--'}
-                  </p>
-                  <p className="text-xs text-blue-600">
-                    {dashboardStats?.total_clicks ? 'Fast redirect' : 'No data'}
-                  </p>
-                </div>
-                <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
-                  <Activity className="w-5 h-5 text-blue-600" />
-                </div>
-              </div>
-            </Card>
-
-            <Card className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Top Link</p>
-                  <p className="text-xl font-bold text-foreground">
-                    {dashboardStats?.recent_activity?.[0]?.link_code?.slice(0, 8) || 'N/A'}
-                  </p>
-                  <p className="text-xs text-purple-600">Most popular</p>
-                </div>
-                <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center">
-                  <MousePointer className="w-5 h-5 text-purple-600" />
-                </div>
-              </div>
-            </Card>
-
-            <Card className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Success Rate</p>
-                  <p className="text-xl font-bold text-foreground">
-                    {dashboardStats?.total_links ? '99.9%' : '--'}
-                  </p>
-                  <p className="text-xs text-emerald-600">
-                    {dashboardStats?.total_links ? 'Reliable' : 'No data'}
-                  </p>
-                </div>
-                <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/20 rounded-lg flex items-center justify-center">
-                  <BarChart3 className="w-5 h-5 text-emerald-600" />
-                </div>
-              </div>
-            </Card>
-          </div>
-        </div>
 
 
       </div>

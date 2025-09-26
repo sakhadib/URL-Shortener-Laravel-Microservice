@@ -134,12 +134,12 @@ export function LinkCard({ link, onUpdate, onLocalClick, onStatusToggle }: LinkC
           </div>
 
           <div className="flex items-center gap-2 ml-4">
-            <Button variant="outline" size="sm" onClick={handleCopy} className="flex items-center gap-1 bg-transparent">
+            <Button variant="outline" size="sm" onClick={handleCopy} className="flex items-center gap-1 bg-transparent hover:bg-cyan-500 hover:text-white border border-border hover:border-cyan-500 transition-all duration-200">
               {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
               {copied ? "Copied!" : "Copy"}
             </Button>
 
-            <Button variant="outline" size="sm" onClick={handleExternalClick}>
+            <Button variant="outline" size="sm" onClick={handleExternalClick} className="hover:bg-cyan-500 hover:text-white border border-border hover:border-cyan-500 transition-all duration-200">
               <ExternalLink className="w-3 h-3" />
             </Button>
 
@@ -148,7 +148,7 @@ export function LinkCard({ link, onUpdate, onLocalClick, onStatusToggle }: LinkC
               size="sm" 
               onClick={handleDelete}
               disabled={isDeleting}
-              className="text-red-500 hover:text-red-700 hover:bg-red-50"
+              className="text-red-500 hover:bg-cyan-500 hover:text-white border border-border hover:border-cyan-500 transition-all duration-200"
             >
               {isDeleting ? (
                 <div className="w-3 h-3 animate-spin rounded-full border-2 border-current border-t-transparent" />
