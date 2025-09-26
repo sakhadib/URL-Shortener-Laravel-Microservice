@@ -77,4 +77,6 @@ declare module 'lucide-react' {
   export const Zap: ComponentType<IconProps>
   export const Shield: ComponentType<IconProps>
   export const Globe: ComponentType<IconProps>
+  export const Eye: ComponentType<IconProps>
+  export const EyeOff: ComponentType<IconProps>
 }
