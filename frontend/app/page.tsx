@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { Link, BarChart3, Zap, Shield, Globe, ArrowRight, Copy, ExternalLink, MousePointer, Sparkles } from "lucide-react"
+import { Link, BarChart3, Zap, Shield, Globe, ArrowRight, Copy, ExternalLink, MousePointer, Sparkles, Check } from "lucide-react"
 import { Dashboard } from "@/components/dashboard"
 import { ConnectionStatus } from "@/components/connection-status"
 import { apiClient, type User } from "@/lib/api-client"
@@ -73,12 +73,12 @@ export default function HomePage() {
         // Start animation sequence
         setAnimateArrow(true)
         
-        // Show result after processing animation
+        // Show result after longer processing animation
         setTimeout(() => {
           setShowResult(true)
-        }, 800)
+        }, 4000)
         
-        // Reset and switch to next demo
+        // Keep the complete state longer, then reset and switch to next demo
         setTimeout(() => {
           setShowResult(false)
           setAnimateArrow(false)
@@ -86,9 +86,9 @@ export default function HomePage() {
           // Smooth transition to next demo
           setTimeout(() => {
             setCurrentDemo((prev) => (prev + 1) % demoUrls.length)
-          }, 500)
-        }, 4000)
-      }, 7000)
+          }, 800)
+        }, 12000)
+      }, 16000)
 
       return () => clearInterval(interval)
     }
@@ -148,7 +148,7 @@ export default function HomePage() {
             Shorten URLs with
             <span className="text-primary"> Precision</span>
           </h1>
-          <p className="text-base text-muted-foreground mb-6 text-pretty max-w-2xl mx-auto">
+          <p className="text-base text-muted-foreground mb-6 whitespace-nowrap max-w-none mx-auto">
             Transform complex URLs into clean, shareable links. Track performance and manage everything in one place.
           </p>
 
@@ -216,14 +216,22 @@ export default function HomePage() {
                   
                   {/* Processing animation - replaces arrow */}
                   {animateArrow && (
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <div className={`w-5 h-5 border-2 border-primary/30 border-t-primary rounded-full animate-spin transition-all duration-700 ${
-                        showResult ? 'scale-110 border-green-500/40 border-t-green-500' : ''
-                      }`}></div>
-                      <div className={`text-xs font-medium mt-1 transition-all duration-500 ${
-                        showResult ? 'text-green-600' : 'text-primary'
-                      }`}>
-                        {showResult ? 'Complete!' : 'Processing...'}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="flex items-center gap-1.5 whitespace-nowrap">
+                        {showResult ? (
+                          // Completed state - show check icon
+                          <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center animate-pulse">
+                            <Check className="w-2.5 h-2.5 text-white" />
+                          </div>
+                        ) : (
+                          // Processing state - show loading spinner
+                          <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin"></div>
+                        )}
+                        <span className={`text-xs font-medium transition-all duration-500 ${
+                          showResult ? 'text-green-600' : 'text-primary'
+                        }`}>
+                          {showResult ? 'Complete!' : 'Processing...'}
+                        </span>
                       </div>
                       
                       {/* Processing effects to match other sections */}
