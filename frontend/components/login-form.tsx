@@ -46,16 +46,16 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
   }
 
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="w-full max-w-sm mx-auto">
       <Card className="border-0 shadow-lg">
-        <CardHeader className="space-y-1 pb-6">
-          <CardTitle className="text-2xl font-semibold text-center">Welcome Back</CardTitle>
-          <CardDescription className="text-center text-muted-foreground">
-            Sign in to your account to continue
+        <CardHeader className="space-y-1 pb-1">
+          <CardTitle className="text-xl font-semibold text-center">Welcome Back</CardTitle>
+          <CardDescription className="text-center text-muted-foreground text-sm">
+            Sign in to continue
           </CardDescription>
         </CardHeader>
-        <CardContent className="px-6 pb-6">
-          <form onSubmit={handleSubmit} className="space-y-5">
+        <CardContent className="px-6 pb-4">
+          <form onSubmit={handleSubmit} className="space-y-3">
             {error && (
               <Alert variant="destructive" className="mb-4">
                 <AlertDescription className="text-sm">{error}</AlertDescription>
@@ -73,7 +73,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="h-11 px-3 border-border focus:border-primary focus:ring-1 focus:ring-primary"
+                className="h-10 px-3 border-border focus:border-primary focus:ring-1 focus:ring-primary"
               />
             </div>
 
@@ -89,7 +89,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="h-11 px-3 pr-10 border-border focus:border-primary focus:ring-1 focus:ring-primary"
+                  className="h-10 px-3 pr-10 border-border focus:border-primary focus:ring-1 focus:ring-primary"
                 />
                 <button
                   type="button"
@@ -105,7 +105,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
 
             <Button 
               type="submit" 
-              className="w-full h-11 text-sm font-medium mt-6" 
+              className="w-full h-10 text-sm font-medium mt-4" 
               disabled={isLoading}
             >
               {isLoading ? (

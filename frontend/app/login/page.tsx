@@ -60,10 +60,9 @@ export default function LoginPage() {
       </header>
 
       {/* Login Form */}
-      <div className="container mx-auto px-4 py-16">
-        <div className="max-w-md mx-auto">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-foreground mb-2">Welcome Back</h1>
+      <div className="container mx-auto px-4 py-4">
+        <div className="max-w-sm mx-auto">
+          <div className="text-center mb-4">
             <p className="text-muted-foreground">
               Don't have an account?{" "}
               <a href="/signup" className="text-primary hover:underline">

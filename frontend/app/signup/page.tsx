@@ -60,9 +60,9 @@ export default function SignupPage() {
       </header>
 
       {/* Signup Form */}
-      <div className="container mx-auto px-4 py-16">
-        <div className="max-w-md mx-auto">
-          <div className="text-center mb-6">
+      <div className="container mx-auto px-4 py-4">
+        <div className="max-w-sm mx-auto">
+          <div className="text-center mb-4">
             <p className="text-muted-foreground">
               Already have an account?{" "}
               <a href="/login" className="text-primary hover:underline">

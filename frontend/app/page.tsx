@@ -66,20 +66,29 @@ export default function HomePage() {
     checkAuth()
   }, [])
 
-  // Animation cycle for the demo
+  // Enhanced animation cycle for the demo
   useEffect(() => {
     if (!isAuthenticated) {
       const interval = setInterval(() => {
+        // Start animation sequence
         setAnimateArrow(true)
+        
+        // Show result after processing animation
         setTimeout(() => {
           setShowResult(true)
+        }, 800)
+        
+        // Reset and switch to next demo
+        setTimeout(() => {
+          setShowResult(false)
+          setAnimateArrow(false)
+          
+          // Smooth transition to next demo
           setTimeout(() => {
-            setShowResult(false)
-            setAnimateArrow(false)
             setCurrentDemo((prev) => (prev + 1) % demoUrls.length)
-          }, 3000)
-        }, 1000)
-      }, 6000)
+          }, 500)
+        }, 4000)
+      }, 7000)
 
       return () => clearInterval(interval)
     }
@@ -133,67 +142,196 @@ export default function HomePage() {
       </div>
 
       {/* Hero Section */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto text-center max-w-4xl">
-          <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6 text-balance">
+      <section className="pt-4 pb-8 px-4">
+        <div className="container mx-auto text-center max-w-6xl">
+          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4 text-balance">
             Shorten URLs with
             <span className="text-primary"> Precision</span>
           </h1>
-          <p className="text-xl text-muted-foreground mb-12 text-pretty max-w-2xl mx-auto">
+          <p className="text-base text-muted-foreground mb-6 text-pretty max-w-2xl mx-auto">
             Transform complex URLs into clean, shareable links. Track performance and manage everything in one place.
           </p>
 
-          {/* Clean Demo */}
-          <Card className="max-w-3xl mx-auto mb-12">
-            <CardContent className="p-6">
-              {/* Demo Animation */}
-              <div className="space-y-4">
-                {/* Long URL */}
-                <div className="relative">
-                  <div className="bg-muted/30 rounded-lg p-3 font-mono text-sm break-all transition-all duration-500">
-                    {demoUrls[currentDemo].long}
-                  </div>
+          {/* Enhanced Demo */}
+          <Card className="max-w-6xl mx-auto mb-6">
+            <CardContent className="p-4">
+              {/* Demo Header */}
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <Badge variant="outline">
+                    <Sparkles className="w-3 h-3 mr-1" />
+                    Live Demo
+                  </Badge>
+                  <span className="text-xs text-muted-foreground">
+                    {demoUrls[currentDemo].title}
+                  </span>
                 </div>
+                <span className="text-xs text-muted-foreground">Watch the transformation</span>
+              </div>
 
-                {/* Arrow */}
-                <div className="flex justify-center">
-                  <div className={`transform transition-all duration-700 ${
-                    animateArrow ? 'text-primary' : 'text-muted-foreground'
+              {/* Enhanced Demo Animation */}
+              <div className="grid lg:grid-cols-7 gap-3 items-center">
+                {/* Long URL Section */}
+                <div className="lg:col-span-3">
+                  <div className="text-xs font-medium text-muted-foreground mb-1 uppercase tracking-wide">
+                    Original URL
+                  </div>
+                  <div className={`relative overflow-hidden bg-muted/40 border rounded-lg p-2.5 font-mono text-xs break-all transition-all duration-700 ease-in-out ${
+                    animateArrow 
+                      ? 'border-primary/50 bg-primary/10 shadow-sm shadow-primary/20 scale-[1.02]' 
+                      : 'border-muted hover:border-muted-foreground/20'
                   }`}>
-                    <ArrowRight className="w-6 h-6" />
+                    {demoUrls[currentDemo].long}
+                    
+                    {/* Scanning effect */}
+                    {animateArrow && (
+                      <>
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent animate-pulse"></div>
+                        <div className="absolute -top-1 -right-1">
+                          <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
+                        </div>
+                        <div className="absolute top-1 left-1">
+                          <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-ping"></div>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                  <div className={`mt-1 text-xs transition-colors duration-500 ${
+                    animateArrow ? 'text-primary font-medium' : 'text-muted-foreground'
+                  }`}>
+                    Length: {demoUrls[currentDemo].long.length} chars
                   </div>
                 </div>
 
-                {/* Short URL Result */}
-                <div className={`transition-all duration-500 ${
-                  showResult ? 'opacity-100' : 'opacity-60'
-                }`}>
-                  <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 font-mono text-sm flex items-center justify-between">
-                    <span className="text-primary font-medium">
-                      {demoUrls[currentDemo].short}
-                    </span>
-                    <div className="flex gap-1">
-                      <Copy className="w-4 h-4 text-muted-foreground" />
-                      <ExternalLink className="w-4 h-4 text-muted-foreground" />
+                {/* Arrow and Process */}
+                <div className="lg:col-span-1 flex flex-col items-center justify-center relative">
+                  {/* Arrow - hidden when processing */}
+                  <div className={`transform transition-all duration-1000 ease-out ${
+                    animateArrow 
+                      ? 'opacity-0 scale-75' 
+                      : 'opacity-100 scale-100'
+                  }`}>
+                    <ArrowRight className="w-5 h-5 drop-shadow-sm text-muted-foreground" />
+                  </div>
+                  
+                  {/* Processing animation - replaces arrow */}
+                  {animateArrow && (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                      <div className={`w-5 h-5 border-2 border-primary/30 border-t-primary rounded-full animate-spin transition-all duration-700 ${
+                        showResult ? 'scale-110 border-green-500/40 border-t-green-500' : ''
+                      }`}></div>
+                      <div className={`text-xs font-medium mt-1 transition-all duration-500 ${
+                        showResult ? 'text-green-600' : 'text-primary'
+                      }`}>
+                        {showResult ? 'Complete!' : 'Processing...'}
+                      </div>
+                      
+                      {/* Processing effects to match other sections */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent animate-pulse"></div>
+                      {showResult && (
+                        <>
+                          <div className="absolute -top-1 -left-1">
+                            <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-ping"></div>
+                          </div>
+                          <div className="absolute -bottom-1 -right-1">
+                            <div className="w-1 h-1 bg-primary rounded-full animate-bounce"></div>
+                          </div>
+                        </>
+                      )}
                     </div>
+                  )}
+                </div>
+
+                {/* Short URL Section */}
+                <div className="lg:col-span-3">
+                  <div className="text-xs font-medium text-muted-foreground mb-1 uppercase tracking-wide">
+                    Shortened URL
+                  </div>
+                  <div className={`relative overflow-hidden bg-primary/5 border border-primary/20 rounded-lg p-2.5 font-mono text-sm transition-all duration-700 ease-out ${
+                    showResult 
+                      ? 'opacity-100 scale-100 border-primary/60 shadow-lg shadow-primary/10 bg-gradient-to-r from-primary/5 to-green/5' 
+                      : 'opacity-40 scale-95 border-primary/10'
+                  }`}>
+                    <div className="flex items-center justify-between">
+                      <span className={`text-primary font-semibold transition-all duration-500 ${
+                        showResult ? 'text-primary' : 'text-primary/60'
+                      }`}>
+                        {demoUrls[currentDemo].short}
+                      </span>
+                      <div className="flex gap-1">
+                        <button className={`p-1 rounded hover:bg-primary/10 transition-all duration-300 ${
+                          showResult ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
+                        }`}>
+                          <Copy className="w-3 h-3 text-primary" />
+                        </button>
+                        <button className={`p-1 rounded hover:bg-primary/10 transition-all duration-300 delay-75 ${
+                          showResult ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
+                        }`}>
+                          <ExternalLink className="w-3 h-3 text-primary" />
+                        </button>
+                      </div>
+                    </div>
+                    
+                    {/* Success shine effect */}
+                    {showResult && (
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 animate-pulse"></div>
+                    )}
+                  </div>
+                  <div className={`mt-1 text-xs transition-all duration-500 ${
+                    showResult ? 'text-green-600 font-medium' : 'text-muted-foreground'
+                  }`}>
+                    Length: {demoUrls[currentDemo].short.length} chars • 
+                    <span className={`ml-1 transition-colors duration-500 ${
+                      showResult ? 'text-green-600 font-semibold' : 'text-green-600/60'
+                    }`}>
+                      {Math.round((1 - demoUrls[currentDemo].short.length / demoUrls[currentDemo].long.length) * 100)}% shorter
+                    </span>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-border/50">
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <Input placeholder="Paste your long URL here..." className="flex-1" />
-                  <Button className="sm:w-auto">
-                    <Link className="w-4 h-4 mr-2" />
+              {/* Interactive Section */}
+              <div className="mt-4 pt-3 border-t border-border/30">
+                <div className="text-center mb-3">
+                  <h3 className="font-semibold text-foreground text-base mb-1">Try it yourself</h3>
+                  <p className="text-sm text-muted-foreground">Paste any URL to see the magic happen</p>
+                </div>
+                <div className="flex gap-2">
+                  <Input 
+                    placeholder="https://example.com/your-url..." 
+                    className="flex-1 font-mono text-xs h-8 bg-white border-border" 
+                  />
+                  <Button className="group h-8 px-3">
+                    <Link className="w-3 h-3 mr-1 group-hover:scale-110 transition-transform" />
                     Shorten
                   </Button>
                 </div>
-                <p className="text-sm text-muted-foreground mt-3">
-                  <a href="/signup" className="text-primary hover:underline">
-                    Create account
+                <p className="text-xs text-muted-foreground text-center mt-2">
+                  <a href="/signup" className="text-primary hover:underline font-medium">
+                    Sign up free
                   </a>{" "}
-                  for analytics and management
+                  for analytics & management
                 </p>
+              </div>
+
+              {/* Benefits Row - Bottom Section */}
+              <div className="mt-4 pt-3 border-t border-border/30">
+                <div className="grid grid-cols-3 gap-3 max-w-sm mx-auto">
+                  <div className="text-center p-2 bg-green-50 rounded border border-green-200">
+                    <div className="text-base font-bold text-green-600">
+                      {Math.round((1 - demoUrls[currentDemo].short.length / demoUrls[currentDemo].long.length) * 100)}%
+                    </div>
+                    <div className="text-xs text-green-700">Reduction</div>
+                  </div>
+                  <div className="text-center p-2 bg-blue-50 rounded border border-blue-200">
+                    <div className="text-base font-bold text-blue-600">0.2s</div>
+                    <div className="text-xs text-blue-700">Processing</div>
+                  </div>
+                  <div className="text-center p-2 bg-purple-50 rounded border border-purple-200">
+                    <div className="text-base font-bold text-purple-600">∞</div>
+                    <div className="text-xs text-purple-700">Clicks</div>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -248,6 +386,117 @@ export default function HomePage() {
               <Button variant="outline" size="lg" asChild>
                 <a href="/login">Sign In</a>
               </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* How it Works Section */}
+      <section className="py-16 px-4 bg-muted/20">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-foreground mb-4">How LinkShort Works</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Our powerful URL shortening service transforms your long links into clean, trackable short URLs in seconds
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left Column - Process Steps */}
+            <div className="space-y-8">
+              <div className="flex items-start gap-4">
+                <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <span className="text-primary-foreground font-semibold text-sm">1</span>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground mb-2">Paste Your Long URL</h3>
+                  <p className="text-muted-foreground text-sm">
+                    Simply paste any long URL - whether it's a social media link, document, or complex webpage with parameters
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4">
+                <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <span className="text-primary-foreground font-semibold text-sm">2</span>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground mb-2">Get Instant Short Link</h3>
+                  <p className="text-muted-foreground text-sm">
+                    Our system processes your URL in milliseconds and generates a clean, memorable short link like link.sh/abc123
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4">
+                <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <span className="text-primary-foreground font-semibold text-sm">3</span>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground mb-2">Share & Track Performance</h3>
+                  <p className="text-muted-foreground text-sm">
+                    Share your short link anywhere and track clicks, locations, devices, and more with detailed analytics
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column - Features & Benefits */}
+            <div className="bg-card border rounded-lg p-8">
+              <h3 className="font-semibold text-foreground mb-6 text-center">What You Get</h3>
+              
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                    <div className="w-2 h-2 bg-green-600 rounded-full"></div>
+                  </div>
+                  <span className="text-sm text-foreground">Up to 85% shorter URLs for better sharing</span>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="w-5 h-5 bg-blue-100 rounded-full flex items-center justify-center">
+                    <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                  </div>
+                  <span className="text-sm text-foreground">Lightning-fast processing in under 0.2 seconds</span>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="w-5 h-5 bg-purple-100 rounded-full flex items-center justify-center">
+                    <div className="w-2 h-2 bg-purple-600 rounded-full"></div>
+                  </div>
+                  <span className="text-sm text-foreground">Unlimited clicks and permanent links</span>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="w-5 h-5 bg-orange-100 rounded-full flex items-center justify-center">
+                    <div className="w-2 h-2 bg-orange-600 rounded-full"></div>
+                  </div>
+                  <span className="text-sm text-foreground">Custom codes for branded short links</span>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="w-5 h-5 bg-cyan-100 rounded-full flex items-center justify-center">
+                    <div className="w-2 h-2 bg-cyan-600 rounded-full"></div>
+                  </div>
+                  <span className="text-sm text-foreground">Detailed analytics and click tracking</span>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="w-5 h-5 bg-pink-100 rounded-full flex items-center justify-center">
+                    <div className="w-2 h-2 bg-pink-600 rounded-full"></div>
+                  </div>
+                  <span className="text-sm text-foreground">Centralized link management dashboard</span>
+                </div>
+              </div>
+
+              <div className="mt-8 pt-6 border-t border-border text-center">
+                <p className="text-sm text-muted-foreground mb-4">
+                  Perfect for social media, email campaigns, marketing, and personal use
+                </p>
+                <Button size="sm" asChild>
+                  <a href="/signup">Start for Free</a>
+                </Button>
+              </div>
             </div>
           </div>
         </div>
