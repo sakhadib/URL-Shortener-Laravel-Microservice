@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Link, Plus, LogOut } from "lucide-react"
 import { CreateLinkForm } from "@/components/create-link-form"
 import { LinkCard } from "@/components/link-card"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { apiClient, type User, type Link as LinkType } from "@/lib/api-client"
 
 interface DashboardProps {
@@ -55,8 +56,9 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
             </div>
             <span className="text-xl font-bold text-foreground">LinkShort</span>
           </div>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3">
             <span className="text-sm text-muted-foreground">Welcome, {user.name}</span>
+            <ThemeToggle />
             <Button variant="outline" size="sm" onClick={handleLogout}>
               <LogOut className="w-4 h-4 mr-2" />
               Sign Out
@@ -105,7 +107,7 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center space-x-2">
-                <div className="w-5 h-5 bg-green-500 rounded-full" />
+                <div className="w-5 h-5 bg-emerald-500 rounded-full" />
                 <div>
                   <p className="text-sm text-muted-foreground">Active Links</p>
                   <p className="text-2xl font-bold">{links.filter(link => link.is_active).length}</p>
@@ -117,7 +119,7 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center space-x-2">
-                <div className="w-5 h-5 bg-blue-500 rounded-full" />
+                <div className="w-5 h-5 bg-primary rounded-full" />
                 <div>
                   <p className="text-sm text-muted-foreground">This Month</p>
                   <p className="text-2xl font-bold">

@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Link, BarChart3, Zap, Shield, Globe, ArrowRight, Copy, ExternalLink, MousePointer, Sparkles, Check } from "lucide-react"
 import { Dashboard } from "@/components/dashboard"
 import { ConnectionStatus } from "@/components/connection-status"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { apiClient, type User } from "@/lib/api-client"
 // import { useBackendConnection } from "@/lib/connection-status"
 
@@ -121,7 +122,8 @@ export default function HomePage() {
             </div>
             <span className="text-xl font-bold text-foreground">LinkShort</span>
           </div>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3">
+            <ThemeToggle />
             <Button variant="outline" size="sm" asChild>
               <a href="/login">Sign In</a>
             </Button>
@@ -191,7 +193,7 @@ export default function HomePage() {
                           <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
                         </div>
                         <div className="absolute top-1 left-1">
-                          <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-ping"></div>
+                          <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></div>
                         </div>
                       </>
                     )}
@@ -220,7 +222,7 @@ export default function HomePage() {
                       <div className="flex items-center gap-1.5 whitespace-nowrap">
                         {showResult ? (
                           // Completed state - show check icon
-                          <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center animate-pulse">
+                          <div className="w-4 h-4 bg-emerald-500 rounded-full flex items-center justify-center animate-pulse">
                             <Check className="w-2.5 h-2.5 text-white" />
                           </div>
                         ) : (
@@ -228,7 +230,7 @@ export default function HomePage() {
                           <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin"></div>
                         )}
                         <span className={`text-xs font-medium transition-all duration-500 ${
-                          showResult ? 'text-green-600' : 'text-primary'
+                          showResult ? 'text-emerald-600' : 'text-primary'
                         }`}>
                           {showResult ? 'Complete!' : 'Processing...'}
                         </span>
@@ -239,7 +241,7 @@ export default function HomePage() {
                       {showResult && (
                         <>
                           <div className="absolute -top-1 -left-1">
-                            <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-ping"></div>
+                            <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></div>
                           </div>
                           <div className="absolute -bottom-1 -right-1">
                             <div className="w-1 h-1 bg-primary rounded-full animate-bounce"></div>
@@ -267,12 +269,12 @@ export default function HomePage() {
                         {demoUrls[currentDemo].short}
                       </span>
                       <div className="flex gap-1">
-                        <button className={`p-1 rounded hover:bg-primary/10 transition-all duration-300 ${
+                        <button className={`p-1 rounded hover:bg-muted/40 transition-all duration-200 ${
                           showResult ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
                         }`}>
                           <Copy className="w-3 h-3 text-primary" />
                         </button>
-                        <button className={`p-1 rounded hover:bg-primary/10 transition-all duration-300 delay-75 ${
+                        <button className={`p-1 rounded hover:bg-muted/40 transition-all duration-200 delay-75 ${
                           showResult ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
                         }`}>
                           <ExternalLink className="w-3 h-3 text-primary" />
@@ -286,11 +288,11 @@ export default function HomePage() {
                     )}
                   </div>
                   <div className={`mt-1 text-xs transition-all duration-500 ${
-                    showResult ? 'text-green-600 font-medium' : 'text-muted-foreground'
+                    showResult ? 'text-emerald-600 font-medium' : 'text-muted-foreground'
                   }`}>
                     Length: {demoUrls[currentDemo].short.length} chars • 
                     <span className={`ml-1 transition-colors duration-500 ${
-                      showResult ? 'text-green-600 font-semibold' : 'text-green-600/60'
+                      showResult ? 'text-emerald-600 font-semibold' : 'text-emerald-600/60'
                     }`}>
                       {Math.round((1 - demoUrls[currentDemo].short.length / demoUrls[currentDemo].long.length) * 100)}% shorter
                     </span>
@@ -307,10 +309,10 @@ export default function HomePage() {
                 <div className="flex gap-2">
                   <Input 
                     placeholder="https://example.com/your-url..." 
-                    className="flex-1 font-mono text-xs h-8 bg-white border-border" 
+                    className="flex-1 font-mono text-xs h-9 bg-card border border-border focus:border-primary/40 focus:ring-1 focus:ring-primary/10 transition-all duration-200" 
                   />
-                  <Button className="group h-8 px-3">
-                    <Link className="w-3 h-3 mr-1 group-hover:scale-110 transition-transform" />
+                  <Button className="group h-9 px-4 bg-gradient-to-r from-primary to-primary/90 hover:from-primary/95 hover:to-primary/85 shadow-sm hover:shadow-md transition-all duration-200">
+                    <Link className="w-3 h-3 mr-1 group-hover:scale-105 transition-transform" />
                     Shorten
                   </Button>
                 </div>
@@ -325,19 +327,19 @@ export default function HomePage() {
               {/* Benefits Row - Bottom Section */}
               <div className="mt-4 pt-3 border-t border-border/30">
                 <div className="grid grid-cols-3 gap-3 max-w-sm mx-auto">
-                  <div className="text-center p-2 bg-green-50 rounded border border-green-200">
-                    <div className="text-base font-bold text-green-600">
+                  <div className="text-center p-3 bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-lg border border-emerald-200 shadow-sm">
+                    <div className="text-base font-bold text-emerald-600">
                       {Math.round((1 - demoUrls[currentDemo].short.length / demoUrls[currentDemo].long.length) * 100)}%
                     </div>
-                    <div className="text-xs text-green-700">Reduction</div>
+                    <div className="text-xs text-emerald-700">Reduction</div>
                   </div>
-                  <div className="text-center p-2 bg-blue-50 rounded border border-blue-200">
-                    <div className="text-base font-bold text-blue-600">0.2s</div>
-                    <div className="text-xs text-blue-700">Processing</div>
+                  <div className="text-center p-3 bg-gradient-to-br from-primary/10 to-primary/20 rounded-lg border border-primary/30 shadow-sm">
+                    <div className="text-base font-bold text-primary">0.2s</div>
+                    <div className="text-xs text-primary/80">Processing</div>
                   </div>
-                  <div className="text-center p-2 bg-purple-50 rounded border border-purple-200">
-                    <div className="text-base font-bold text-purple-600">∞</div>
-                    <div className="text-xs text-purple-700">Clicks</div>
+                  <div className="text-center p-3 bg-gradient-to-br from-violet-50 to-violet-100 rounded-lg border border-violet-200 shadow-sm">
+                    <div className="text-base font-bold text-violet-600">∞</div>
+                    <div className="text-xs text-violet-700">Clicks</div>
                   </div>
                 </div>
               </div>
@@ -346,10 +348,10 @@ export default function HomePage() {
 
           {/* Features Grid */}
           <div className="grid md:grid-cols-3 gap-6 mb-16">
-            <Card className="text-center">
+            <Card className="text-center hover:shadow-sm transition-all duration-200 border hover:border-border/60">
               <CardContent className="p-6">
-                <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <BarChart3 className="w-6 h-6 text-amber-600" />
+                <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-primary/30 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+                  <BarChart3 className="w-6 h-6 text-primary" />
                 </div>
                 <h3 className="text-lg font-semibold mb-2">Click Analytics</h3>
                 <p className="text-muted-foreground text-sm">
@@ -358,10 +360,10 @@ export default function HomePage() {
               </CardContent>
             </Card>
 
-            <Card className="text-center">
+            <Card className="text-center hover:shadow-sm transition-all duration-200 border hover:border-border/60">
               <CardContent className="p-6">
-                <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <Shield className="w-6 h-6 text-amber-600" />
+                <div className="w-12 h-12 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+                  <Shield className="w-6 h-6 text-emerald-600" />
                 </div>
                 <h3 className="text-lg font-semibold mb-2">Custom Codes</h3>
                 <p className="text-muted-foreground text-sm">
@@ -370,10 +372,10 @@ export default function HomePage() {
               </CardContent>
             </Card>
 
-            <Card className="text-center">
+            <Card className="text-center hover:shadow-sm transition-all duration-200 border hover:border-border/60">
               <CardContent className="p-6">
-                <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <Globe className="w-6 h-6 text-amber-600" />
+                <div className="w-12 h-12 bg-gradient-to-br from-violet-100 to-violet-200 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+                  <Globe className="w-6 h-6 text-violet-600" />
                 </div>
                 <h3 className="text-lg font-semibold mb-2">Link Management</h3>
                 <p className="text-muted-foreground text-sm">
@@ -388,10 +390,10 @@ export default function HomePage() {
             <h2 className="text-3xl font-bold text-foreground mb-4">Ready to get started?</h2>
             <p className="text-muted-foreground mb-6">Create your account and start shortening URLs today</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" asChild>
+              <Button size="lg" asChild className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/95 hover:to-primary/85 shadow-sm hover:shadow-md transition-all duration-200">
                 <a href="/signup">Get Started Free</a>
               </Button>
-              <Button variant="outline" size="lg" asChild>
+              <Button variant="outline" size="lg" asChild className="border hover:bg-muted/30 transition-all duration-200">
                 <a href="/login">Sign In</a>
               </Button>
             </div>
@@ -455,43 +457,43 @@ export default function HomePage() {
               
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
-                    <div className="w-2 h-2 bg-green-600 rounded-full"></div>
+                  <div className="w-6 h-6 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-full flex items-center justify-center shadow-sm">
+                    <div className="w-2.5 h-2.5 bg-emerald-600 rounded-full"></div>
                   </div>
                   <span className="text-sm text-foreground">Up to 85% shorter URLs for better sharing</span>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="w-5 h-5 bg-blue-100 rounded-full flex items-center justify-center">
-                    <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                  <div className="w-6 h-6 bg-gradient-to-br from-primary/20 to-primary/30 rounded-full flex items-center justify-center shadow-sm">
+                    <div className="w-2.5 h-2.5 bg-primary rounded-full"></div>
                   </div>
                   <span className="text-sm text-foreground">Lightning-fast processing in under 0.2 seconds</span>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="w-5 h-5 bg-purple-100 rounded-full flex items-center justify-center">
-                    <div className="w-2 h-2 bg-purple-600 rounded-full"></div>
+                  <div className="w-6 h-6 bg-gradient-to-br from-violet-100 to-violet-200 rounded-full flex items-center justify-center shadow-sm">
+                    <div className="w-2.5 h-2.5 bg-violet-600 rounded-full"></div>
                   </div>
                   <span className="text-sm text-foreground">Unlimited clicks and permanent links</span>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="w-5 h-5 bg-orange-100 rounded-full flex items-center justify-center">
-                    <div className="w-2 h-2 bg-orange-600 rounded-full"></div>
+                  <div className="w-6 h-6 bg-gradient-to-br from-rose-100 to-rose-200 rounded-full flex items-center justify-center shadow-sm">
+                    <div className="w-2.5 h-2.5 bg-rose-600 rounded-full"></div>
                   </div>
                   <span className="text-sm text-foreground">Custom codes for branded short links</span>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="w-5 h-5 bg-cyan-100 rounded-full flex items-center justify-center">
-                    <div className="w-2 h-2 bg-cyan-600 rounded-full"></div>
+                  <div className="w-6 h-6 bg-gradient-to-br from-cyan-100 to-cyan-200 rounded-full flex items-center justify-center shadow-sm">
+                    <div className="w-2.5 h-2.5 bg-cyan-600 rounded-full"></div>
                   </div>
                   <span className="text-sm text-foreground">Detailed analytics and click tracking</span>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="w-5 h-5 bg-pink-100 rounded-full flex items-center justify-center">
-                    <div className="w-2 h-2 bg-pink-600 rounded-full"></div>
+                  <div className="w-6 h-6 bg-gradient-to-br from-teal-100 to-teal-200 rounded-full flex items-center justify-center shadow-sm">
+                    <div className="w-2.5 h-2.5 bg-teal-600 rounded-full"></div>
                   </div>
                   <span className="text-sm text-foreground">Centralized link management dashboard</span>
                 </div>
